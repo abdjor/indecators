@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مؤشر القوة النسبية (RSI)</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -41,10 +42,10 @@
     <button onclick="location.href='index.html'">عودة</button>
 
     <script>
-        // مثال بيانات لمؤشر RSI
+        // بيانات لمؤشر RSI (يمكنك استبدالها ببيانات حقيقية)
         const rsiData = {
             labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-            data: [70, 80, 50, 40, 20, 30], // البيانات يمكن أن تكون تمثيلًا تاريخيًا
+            data: [70, 80, 50, 40, 20, 30],
         };
 
         const ctx = document.getElementById('rsiChart').getContext('2d');
@@ -67,11 +68,6 @@
                         beginAtZero: true,
                         min: 0,
                         max: 100,
-                        ticks: {
-                            callback: function(value) {
-                                return value; // عرض القيم على الخطوط
-                            }
-                        }
                     }
                 },
                 plugins: {
@@ -109,13 +105,14 @@
 
         function searchCrypto() {
             const cryptoName = document.getElementById('cryptoName').value;
-            // هنا يمكنك إضافة منطق لتحميل بيانات العملة
+            // منطق البحث عن العملة
+            // هنا يمكنك إضافة منطق لتحميل بيانات العملة الفعلي من واجهة برمجة التطبيقات (API)
             const hasDivergence = Math.random() < 0.5; // مثال عشوائي لتحديد وجود دايفرجنس
 
             if (hasDivergence) {
-                document.getElementById('divergence').innerText = 'يوجد دايفرجنس إيجابي';
+                document.getElementById('divergence').innerText = `يوجد دايفرجنس إيجابي للعملة: ${cryptoName}`;
             } else {
-                document.getElementById('divergence').innerText = 'لا يوجد دايفرجنس';
+                document.getElementById('divergence').innerText = `لا يوجد دايفرجنس للعملة: ${cryptoName}`;
             }
         }
     </script>
