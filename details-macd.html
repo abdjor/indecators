@@ -32,6 +32,12 @@
             font-size: 24px;
             margin-bottom: 20px;
         }
+        #market-condition {
+            text-align: center; /* لتوسيط حالة السوق */
+            font-size: 18px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -44,6 +50,7 @@
     </div>
 
     <div id="crypto-name">اسم العملة هنا</div> <!-- لعرض اسم العملة -->
+    <div id="market-condition">حالة السوق هنا</div> <!-- لعرض حالة السوق -->
 
     <div id="timeframe">
         <label for="timeframe-select">اختر الفريم:</label>
@@ -66,6 +73,7 @@
         let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
         const favoritesList = document.getElementById('favorites-list');
         const cryptoNameElement = document.getElementById('crypto-name');
+        const marketConditionElement = document.getElementById('market-condition');
         let currentCrypto = ''; // تخزين العملة الحالية
 
         function addToFavorites() {
@@ -112,6 +120,18 @@
             const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
             const macdData = [1, 0, -1, 0, 1, -1, 1]; // بيانات عشوائية كمثال
             const signalData = [0, 1, 0, -1, 0, 1, 0]; // بيانات عشوائية كمثال
+
+            // تحديد حالة السوق بناءً على آخر قيمة MACD
+            const lastMacdValue = macdData[macdData.length - 1];
+            let marketCondition = '';
+            if (lastMacdValue < -2) {
+                marketCondition = 'Oversold - Buy possible';
+            } else if (lastMacdValue > 2) {
+                marketCondition = 'Overbought - Sell possible';
+            } else {
+                marketCondition = 'Neutral';
+            }
+            marketConditionElement.textContent = marketCondition; // تحديث حالة السوق
 
             const macdChart = new Chart(ctx, {
                 type: 'line',
