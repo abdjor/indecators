@@ -3,67 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مؤشر العملات المفضلة</title>
+    <title>Favorites Example</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
         }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #007bff;
-            color: white;
+
+        #favorites-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        #favorites-dropdown {
             padding: 10px;
-            border-radius: 5px;
+            cursor: pointer;
         }
-        #item-list {
-            margin-top: 20px;
+
+        #favorite-list {
+            display: none;
             list-style-type: none;
+            margin: 0;
             padding: 0;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            width: 200px;
+            position: absolute;
         }
-        #item-list li {
+
+        #favorite-list li {
             padding: 8px;
-            background-color: #f0f0f0;
-            margin: 5px 0;
-            border-radius: 4px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
         }
-        #itemInput {
-            margin-right: 10px;
+
+        #favorite-list li:hover {
+            background-color: #f1f1f1;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>مفضلة العملات</h1>
-        <div>
-            <input type="text" id="itemInput" placeholder="أدخل اسم العملة هنا">
-            <button id="addButton">إضافة</button>
-        </div>
-    </header>
 
-    <ul id="item-list"></ul>
+    <div id="favorites-container">
+        <button id="favorites-dropdown">Favorites ⬇</button>
+        <ul id="favorite-list"></ul>
+    </div>
+
+    <div>
+        <input type="text" id="cryptoInput" placeholder="Enter crypto name">
+        <button onclick="addFavorite()">Add to Favorites</button>
+    </div>
 
     <script>
-        // إضافة حدث للزر عند الضغط عليه
-        document.getElementById('addButton').onclick = function() {
-            addItem();
-        };
+        const favoriteList = document.getElementById('favorite-list');
+        const favoritesDropdown = document.getElementById('favorites-dropdown');
 
-        function addItem() {
-            const itemInput = document.getElementById('itemInput');
-            const itemText = itemInput.value.trim();
+        // Toggle the visibility of the favorite list
+        favoritesDropdown.addEventListener('click', () => {
+            favoriteList.style.display = favoriteList.style.display === 'none' ? 'block' : 'none';
+        });
 
-            if (itemText) {
-                const listItem = document.createElement('li');
-                listItem.textContent = itemText;
-                document.getElementById('item-list').appendChild(listItem);
-                itemInput.value = ''; // مسح حقل الإدخال
-            } else {
-                alert('يرجى إدخال نص.'); // رسالة خطأ إذا كان الحقل فارغًا
+        // Function to add a favorite item
+        function addFavorite() {
+            const cryptoInput = document.getElementById('cryptoInput').value;
+            if (!cryptoInput) {
+                alert('Please enter a crypto name.');
+                return;
             }
+
+            const listItem = document.createElement('li');
+            listItem.textContent = cryptoInput;
+            favoriteList.appendChild(listItem);
+
+            document.getElementById('cryptoInput').value = ''; // Clear the input field
         }
     </script>
+
 </body>
 </html>
