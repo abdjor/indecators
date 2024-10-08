@@ -41,10 +41,10 @@
     <button onclick="location.href='index.html'">Go Back</button>
 
     <script>
-        // مثال بيانات لمؤشر RSI
+        // بيانات لمؤشر RSI
         const rsiData = {
             labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-            data: [70, 65, 80, 40, 20, 50], // البيانات يمكن أن تكون تمثيلًا تاريخيًا
+            data: [70, 80, 50, 40, 20, 30], // يمكن تعديلها لتناسب البيانات الحقيقية
         };
 
         const ctx = document.getElementById('rsiChart').getContext('2d');
@@ -61,6 +61,7 @@
                 }]
             },
             options: {
+                responsive: true,
                 scales: {
                     y: {
                         beginAtZero: true,
@@ -69,35 +70,39 @@
                         ticks: {
                             callback: function(value) {
                                 if (value === 30 || value === 75) {
-                                    return value + ' (خط)';
+                                    return value; // لإظهار القيم عند الخطوط
                                 }
                                 return value;
                             }
                         }
                     }
                 },
-                annotation: {
-                    annotations: {
-                        line1: {
-                            type: 'line',
-                            yMin: 30,
-                            yMax: 30,
-                            borderColor: 'red',
-                            borderWidth: 2,
-                            label: {
-                                enabled: true,
-                                content: 'خط 30'
-                            }
-                        },
-                        line2: {
-                            type: 'line',
-                            yMin: 75,
-                            yMax: 75,
-                            borderColor: 'green',
-                            borderWidth: 2,
-                            label: {
-                                enabled: true,
-                                content: 'خط 75'
+                plugins: {
+                    annotation: {
+                        annotations: {
+                            line1: {
+                                type: 'line',
+                                yMin: 30,
+                                yMax: 30,
+                                borderColor: 'red',
+                                borderWidth: 2,
+                                label: {
+                                    content: 'خط 30',
+                                    enabled: true,
+                                    position: 'start'
+                                }
+                            },
+                            line2: {
+                                type: 'line',
+                                yMin: 75,
+                                yMax: 75,
+                                borderColor: 'green',
+                                borderWidth: 2,
+                                label: {
+                                    content: 'خط 75',
+                                    enabled: true,
+                                    position: 'start'
+                                }
                             }
                         }
                     }
@@ -107,8 +112,7 @@
 
         function searchCrypto() {
             const cryptoName = document.getElementById('cryptoName').value;
-            // هنا يمكن إضافة منطق للبحث في بيانات العملة
-            // للتحقق من وجود دايفرجنس يمكن إضافة شرط بناءً على البيانات
+            // منطق البحث عن العملة والتحقق من الدايفرجنس
             const hasDivergence = Math.random() < 0.5; // مثال عشوائي لتحديد وجود دايفرجنس
 
             if (hasDivergence) {
