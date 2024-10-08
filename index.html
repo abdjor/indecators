@@ -3,96 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indicator Dashboard</title>
+    <title>مؤشر MACD</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+            margin: 20px;
         }
-
-        /* زر المفضلة */
-        .favorite-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
+        #favorite-button {
             background-color: #007bff;
             color: white;
             border: none;
             padding: 10px;
             cursor: pointer;
             border-radius: 5px;
-        }
-
-        /* تقسيم الصفحة إلى نصفين */
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center; /* لتوسيع المربعات في المنتصف */
-            width: 80%; /* لتحديد عرض الحاوية */
-        }
-
-        .box {
-            flex: 1 1 30%; /* حجم المربعات */
-            margin: 10px;
-            padding: 20px;
-            border: 2px solid #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            text-align: center; /* للتأكد من محاذاة النص بشكل جيد */
-        }
-
-        .box:hover {
-            background-color: #f0f0f0;
-        }
-
-        /* للتأكد من أن المربعات تبقى مناسبة على كل الأجهزة */
-        @media screen and (max-width: 768px) {
-            .box {
-                flex: 1 1 45%;
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            .box {
-                flex: 1 1 100%;
-            }
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-
-    <button class="favorite-button" onclick="toggleFavorites()">✨ المفضلة</button>
-
-    <div class="container">
-        <div class="box" onclick="location.href='details-rsi.html'">RSI</div>
-        <div class="box" onclick="location.href='details-macd.html'">MACD</div>
-        <div class="box" onclick="location.href='details-adx.html'">ADX</div>
-        <div class="box" onclick="location.href='details-volt.html'">Volatility (Volt)</div>
-        <div class="box" onclick="location.href='details-vol.html'">Volume (Vol)</div>
-        <div class="box" onclick="location.href='details-inflow.html'">Inflow</div>
-        <div class="box" onclick="location.href='details-outflow.html'">Outflow</div>
-        <div class="box" onclick="location.href='details-total-inflow-outflow.html'">Total Inflow/Outflow</div>
-        <div class="box" onclick="location.href='details-momentum.html'">Momentum</div>
-        <div class="box" onclick="location.href='details-trend.html'">Trend</div>
-        <div class="box" onclick="location.href='details-fear-greed.html'">Fear and Greed</div>
-    </div>
-
+    <button id="favorite-button" onclick="addToFavorites()">إضافة إلى المفضلة</button>
+    
+    <h1>مؤشر MACD</h1>
+    <canvas id="macdChart" width="400" height="200"></canvas>
+    
     <script>
-        function toggleFavorites() {
-            alert("هنا يمكنك إضافة العملات إلى المفضلة.");
-            // يمكنك إضافة منطق لإدارة المفضلة هنا
+        function addToFavorites() {
+            const cryptoName = document.getElementById('crypto-name').innerText;
+            alert(cryptoName + ' تمت إضافته إلى المفضلة!');
+            // يمكنك هنا إضافة الكود لحفظ العملة في المفضلة، مثل استخدام localStorage
         }
-    </script>
 
+        // بقية الكود الخاص بمؤشر MACD هنا...
+    </script>
 </body>
 </html>
