@@ -17,10 +17,27 @@
         #search-container {
             margin-bottom: 20px;
         }
+        #settings-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #favorites {
+            margin-top: 20px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <h1>مؤشر ADX للعملة: <span id="crypto-name"> - </span></h1>
+
+    <button id="settings-button" onclick="toggleSettings()">⚙️ إعدادات</button>
 
     <div id="search-container">
         <input type="text" id="cryptoName" placeholder="أدخل اسم العملة هنا">
@@ -32,6 +49,8 @@
     </div>
 
     <canvas id="adxChart" width="400" height="200"></canvas>
+
+    <div id="favorites">المفضلة: <span id="favorites-list">لا توجد عملات مفضلة بعد.</span></div>
 
     <script>
         const adxData = {
@@ -126,6 +145,8 @@
             }
         });
 
+        let favorites = [];
+
         function searchCrypto() {
             const cryptoName = document.getElementById('cryptoName').value;
             if (!cryptoName) {
@@ -135,8 +156,31 @@
 
             document.getElementById('crypto-name').innerText = cryptoName;
 
+            // إضافة العملة إلى المفضلة
+            addFavorite(cryptoName);
+
             // هنا يمكنك إضافة منطق لتحميل بيانات العملة الفعلي من واجهة برمجة التطبيقات (API)
             // ثم تحديث الرسم البياني بناءً على البيانات الجديدة
+        }
+
+        function addFavorite(cryptoName) {
+            if (!favorites.includes(cryptoName)) {
+                favorites.push(cryptoName);
+                updateFavoritesList();
+            }
+        }
+
+        function updateFavoritesList() {
+            if (favorites.length > 0) {
+                document.getElementById('favorites-list').innerText = favorites.join(', ');
+            } else {
+                document.getElementById('favorites-list').innerText = 'لا توجد عملات مفضلة بعد.';
+            }
+        }
+
+        function toggleSettings() {
+            alert("هنا يمكنك إضافة خيارات الإعدادات لتخصيص مؤشراتك.");
+            // يمكنك إضافة خيارات الإعدادات هنا لتغيير القيم أو إضافة ميزات أخرى
         }
     </script>
 </body>
