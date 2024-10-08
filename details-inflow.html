@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inflow Indicator</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Inflow Indicator</h1>
+    <p>This is the detail page for the Inflow indicator.</p>
+    <canvas id="inflowChart" width="400" height="200"></canvas>
+    <button onclick="location.href='index.html'">Go Back</button>
+
+    <script>
+        const ctx = document.getElementById('inflowChart').getContext('2d');
+        const inflowChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                datasets: [{
+                    label: 'Inflow',
+                    data
