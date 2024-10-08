@@ -3,34 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مؤشر MACD</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>لوحة مؤشرات السوق</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        #favorite-button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        .indicator-description {
-            margin-bottom: 20px;
-        }
+        /* تقسيم الصفحة إلى نصفين */
         .container {
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            flex-wrap: wrap;
+            height: auto;
+            padding: 20px;
         }
+
+        .box {
+            flex: 1 1 30%;
+            margin: 10px;
+            padding: 20px;
+            border: 2px solid #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .box:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* جدول البيانات */
         table {
-            margin-top: 20px;
-            border-collapse: collapse;
             width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
         th, td {
             border: 1px solid #ddd;
@@ -45,70 +49,46 @@
 <body>
 
     <div class="container">
-        <button id="favorite-button" onclick="addToFavorites()">إضافة إلى المفضلة</button>
-        <h1>مؤشر MACD</h1>
-        
-        <div class="indicator-description">
-            <p><strong>مؤشر MACD:</strong> يقيس الفرق بين متوسطين متحركين، مما يساعد في تحديد الاتجاهات.</p>
-        </div>
-        
-        <canvas id="macdChart" width="400" height="200"></canvas>
-
-        <!-- جدول البيانات -->
-        <table>
-            <thead>
-                <tr>
-                    <th>التاريخ</th>
-                    <th>القيمة</th>
-                </tr>
-            </thead>
-            <tbody id="data-table-body">
-                <tr>
-                    <td>1 يناير</td>
-                    <td>1.2</td>
-                </tr>
-                <tr>
-                    <td>2 يناير</td>
-                    <td>2.5</td>
-                </tr>
-                <tr>
-                    <td>3 يناير</td>
-                    <td>-0.5</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="box" onclick="location.href='details-rsi.html'">RSI</div>
+        <div class="box" onclick="location.href='details-macd.html'">MACD</div>
+        <div class="box" onclick="location.href='details-adx.html'">ADX</div>
+        <div class="box" onclick="location.href='details-volt.html'">Volatility (Volt)</div>
+        <div class="box" onclick="location.href='details-vol.html'">Volume (Vol)</div>
+        <div class="box" onclick="location.href='details-inflow.html'">Inflow</div>
+        <div class="box" onclick="location.href='details-outflow.html'">Outflow</div>
+        <div class="box" onclick="location.href='details-total-inflow-outflow.html'">Total Inflow/Outflow</div>
+        <div class="box" onclick="location.href='details-momentum.html'">Momentum</div>
+        <div class="box" onclick="location.href='details-trend.html'">Trend</div>
+        <div class="box" onclick="location.href='details-fear-greed.html'">Fear and Greed</div>
     </div>
 
-    <script>
-        function addToFavorites() {
-            const cryptoName = "MACD"; // يمكنك تغيير هذا لاسم العملة المطلوبة
-            alert(cryptoName + ' تمت إضافته إلى المفضلة!');
-            // يمكنك هنا إضافة الكود لحفظ العملة في المفضلة
-        }
+    <table>
+        <thead>
+            <tr>
+                <th>اسم المؤشر</th>
+                <th>الوصف</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>RSI</td>
+                <td>مؤشر القوة النسبية</td>
+            </tr>
+            <tr>
+                <td>MACD</td>
+                <td>مؤشر التقارب والابتعاد المتحرك</td>
+            </tr>
+            <tr>
+                <td>ADX</td>
+                <td>مؤشر الاتجاه المتوسط</td>
+            </tr>
+            <tr>
+                <td>Volatility</td>
+                <td>مؤشر التقلبات</td>
+            </tr>
+            <!-- أضف المزيد من المؤشرات هنا -->
+        </tbody>
+    </table>
 
-        // إعدادات الرسم البياني هنا...
-        const ctx = document.getElementById('macdChart').getContext('2d');
-        const macdChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['January', 'February', 'March'],
-                datasets: [{
-                    label: 'MACD',
-                    data: [1, 2, 0],
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 2,
-                    fill: false
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    }
-                }
-            }
-        });
-    </script>
 </body>
 </html>
