@@ -3,45 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مفضلة العملات</title>
+    <title>مؤشر العملات</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            position: relative; /* لتحديد موقع القائمة المنسدلة */
         }
-        #favorites-list {
-            border: 1px solid #ccc;
-            max-height: 150px;
-            overflow-y: auto;
-            display: none; /* مخفي بشكل افتراضي */
+        #favorites-dropdown {
             position: absolute;
-            background: white;
+            right: 20px;
+            top: 20px;
+            display: none; /* مخفي بشكل افتراضي */
+            background-color: white;
+            border: 1px solid #ccc;
             z-index: 10;
             width: 200px; /* عرض القائمة */
         }
-        #favorites-list div {
-            padding: 5px;
+        #favorites-dropdown div {
+            padding: 8px;
             cursor: pointer;
         }
-        #favorites-list div:hover {
+        #favorites-dropdown div:hover {
             background-color: #f0f0f0; /* تمييز عند التحويم */
         }
     </style>
 </head>
 <body>
-    <h1>نظام المفضلة</h1>
+    <h1>مؤشر العملات</h1>
     
-    <button onclick="toggleFavorites()">🎉 المفضلة</button>
-    <div id="favorites-list"></div>
     <input type="text" id="favoriteCurrency" placeholder="أدخل اسم العملة هنا">
     <button onclick="addFavorite()">أضف إلى المفضلة</button>
+    
+    <button onclick="toggleFavorites()">🎉 المفضلة</button>
+    <div id="favorites-dropdown"></div>
 
     <script>
         const favorites = [];
 
         function toggleFavorites() {
-            const favoritesList = document.getElementById('favorites-list');
-            favoritesList.style.display = (favoritesList.style.display === 'none' || favoritesList.style.display === '') ? 'block' : 'none';
+            const dropdown = document.getElementById('favorites-dropdown');
+            dropdown.style.display = (dropdown.style.display === 'none' || dropdown.style.display === '') ? 'block' : 'none';
             displayFavorites();
         }
 
@@ -49,7 +51,7 @@
             const currency = document.getElementById('favoriteCurrency').value.trim();
             if (currency && !favorites.includes(currency)) {
                 favorites.push(currency);
-                document.getElementById('favoriteCurrency').value = '';
+                document.getElementById('favoriteCurrency').value = ''; // مسح حقل الإدخال
                 displayFavorites();
             } else {
                 alert('يرجى إدخال اسم عملة فريد.');
@@ -57,12 +59,12 @@
         }
 
         function displayFavorites() {
-            const favoritesList = document.getElementById('favorites-list');
-            favoritesList.innerHTML = '';
+            const dropdown = document.getElementById('favorites-dropdown');
+            dropdown.innerHTML = ''; // مسح المحتوى السابق
             favorites.forEach(fav => {
                 const div = document.createElement('div');
                 div.innerText = fav;
-                favoritesList.appendChild(div);
+                dropdown.appendChild(div);
             });
         }
     </script>
