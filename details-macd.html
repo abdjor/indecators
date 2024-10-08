@@ -38,6 +38,10 @@
             margin: 20px 0;
             font-weight: bold;
         }
+        #macdChart {
+            max-width: 600px; /* تقليل عرض الشارت */
+            margin: 0 auto; /* توسيط الشارت */
+        }
     </style>
 </head>
 <body>
@@ -75,6 +79,7 @@
         const cryptoNameElement = document.getElementById('crypto-name');
         const marketConditionElement = document.getElementById('market-condition');
         let currentCrypto = ''; // تخزين العملة الحالية
+        let macdChart; // تعريف متغير للشارت
 
         function addToFavorites() {
             const input = document.getElementById('favorite-input');
@@ -112,11 +117,11 @@
         function setCryptoName(name) {
             cryptoNameElement.textContent = name; // تغيير اسم العملة
             currentCrypto = name; // حفظ العملة الحالية
-            loadMACDData(name);
+            loadMACDData(name, document.getElementById('timeframe-select').value); // تمرير الفريم الحالي
         }
 
-        function loadMACDData(crypto) {
-            // استخدم هنا API لتحميل بيانات MACD للعملة المحددة
+        function loadMACDData(crypto, timeframe) {
+            // استخدم هنا API لتحميل بيانات MACD للعملة المحددة مع الفريم
             const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
             const macdData = [1, 0, -1, 0, 1, -1, 1]; // بيانات عشوائية كمثال
             const signalData = [0, 1, 0, -1, 0, 1, 0]; // بيانات عشوائية كمثال
@@ -133,7 +138,12 @@
             }
             marketConditionElement.textContent = marketCondition; // تحديث حالة السوق
 
-            const macdChart = new Chart(ctx, {
+            // تحديث الشارت أو إنشاءه إذا لم يكن موجودًا
+            if (macdChart) {
+                macdChart.destroy(); // تدمير الشارت الحالي
+            }
+
+            macdChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: labels,
@@ -165,15 +175,13 @@
 
         function updateTimeframe() {
             const selectedTimeframe = document.getElementById('timeframe-select').value;
-            // هنا يمكنك إضافة الكود لتحميل البيانات بناءً على الفريم المحدد
             console.log(`الفريم المحدد: ${selectedTimeframe}`);
-            // قد تحتاج إلى تحديث بيانات الشارت هنا بناءً على الفريم الجديد
-            loadMACDData(currentCrypto); // إعادة تحميل البيانات للعملة الحالية
+            loadMACDData(currentCrypto, selectedTimeframe); // إعادة تحميل البيانات للعملة الحالية مع الفريم المحدد
         }
 
         // عرض قائمة المفضلة عند تحميل الصفحة
         updateFavoritesList();
-        loadMACDData('عملة افتراضية'); // تحميل بيانات عملة افتراضية عند التحميل
+        loadMACDData('عملة افتراضية', '1m'); // تحميل بيانات عملة افتراضية عند التحميل
     </script>
 </body>
 </html>
