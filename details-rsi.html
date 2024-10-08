@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RSI Indicator</title>
+    <title>مؤشر القوة النسبية (RSI)</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -13,29 +13,48 @@
         .indicator-description {
             margin-bottom: 20px;
         }
+        #search-container {
+            margin-bottom: 20px;
+        }
+        #divergence {
+            margin-top: 20px;
+            font-weight: bold;
+            color: red; /* لون لافت للانتباه */
+        }
     </style>
 </head>
 <body>
     <h1>مؤشر القوة النسبية (RSI)</h1>
+    <div id="search-container">
+        <input type="text" id="cryptoName" placeholder="أدخل اسم العملة هنا">
+        <button onclick="searchCrypto()">بحث</button>
+    </div>
     <div class="indicator-description">
         <p><strong>مؤشر القوة النسبية (RSI):</strong> يقيس سرعة وحركة تحركات الأسعار. يُستخدم لتحديد ظروف الشراء أو البيع.</p>
         <p><strong>مستويات العتبة:</strong> 
-            - إذا كانت القيمة فوق 70، يعتبر السوق مشبعًا بالشراء.
-            - إذا كانت القيمة تحت 30، يعتبر السوق مشبعًا بالبيع.
+            - إذا كانت القيمة فوق 75، يعتبر السوق مشبعًا بالشراء.
+            - إذا كانت القيمة تحت 25، يعتبر السوق مشبعًا بالبيع.
         </p>
     </div>
     <canvas id="rsiChart" width="400" height="200"></canvas>
+    <div id="divergence"></div>
     <button onclick="location.href='index.html'">Go Back</button>
 
     <script>
+        // مثال بيانات لمؤشر RSI
+        const rsiData = {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+            data: [70, 65, 80, 40, 20, 50], // البيانات يمكن أن تكون تمثيلًا تاريخيًا
+        };
+
         const ctx = document.getElementById('rsiChart').getContext('2d');
         const rsiChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                labels: rsiData.labels,
                 datasets: [{
                     label: 'RSI',
-                    data: [70, 65, 80, 40, 20, 50], // البيانات يمكن أن تكون تمثيلًا تاريخيًا
+                    data: rsiData.data,
                     borderColor: 'rgba(255, 159, 64, 1)',
                     borderWidth: 2,
                     fill: false
@@ -47,10 +66,57 @@
                         beginAtZero: true,
                         min: 0,
                         max: 100,
+                        ticks: {
+                            callback: function(value) {
+                                if (value === 30 || value === 75) {
+                                    return value + ' (خط)';
+                                }
+                                return value;
+                            }
+                        }
+                    }
+                },
+                annotation: {
+                    annotations: {
+                        line1: {
+                            type: 'line',
+                            yMin: 30,
+                            yMax: 30,
+                            borderColor: 'red',
+                            borderWidth: 2,
+                            label: {
+                                enabled: true,
+                                content: 'خط 30'
+                            }
+                        },
+                        line2: {
+                            type: 'line',
+                            yMin: 75,
+                            yMax: 75,
+                            borderColor: 'green',
+                            borderWidth: 2,
+                            label: {
+                                enabled: true,
+                                content: 'خط 75'
+                            }
+                        }
                     }
                 }
             }
         });
+
+        function searchCrypto() {
+            const cryptoName = document.getElementById('cryptoName').value;
+            // هنا يمكن إضافة منطق للبحث في بيانات العملة
+            // للتحقق من وجود دايفرجنس يمكن إضافة شرط بناءً على البيانات
+            const hasDivergence = Math.random() < 0.5; // مثال عشوائي لتحديد وجود دايفرجنس
+
+            if (hasDivergence) {
+                document.getElementById('divergence').innerText = 'يوجد دايفرجنس إيجابي';
+            } else {
+                document.getElementById('divergence').innerText = 'لا يوجد دايفرجنس';
+            }
+        }
     </script>
 </body>
 </html>
