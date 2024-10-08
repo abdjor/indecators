@@ -3,69 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مؤشر العملات مع المفضلة</title>
+    <title>Crypto Indicators</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            position: relative; /* لتحديد موقع القائمة المنسدلة */
         }
-        #favorites-dropdown {
+        #favorites-container {
+            position: relative;
+            display: inline-block;
+        }
+        #favorites-list {
+            display: none;
             position: absolute;
-            right: 20px;
-            top: 60px; /* تعديل المسافة لتجنب تداخلها مع الأزرار */
-            display: none; /* مخفي بشكل افتراضي */
             background-color: white;
             border: 1px solid #ccc;
-            z-index: 10;
-            width: 200px; /* عرض القائمة */
+            z-index: 1;
         }
-        #favorites-dropdown div {
-            padding: 8px;
+        #favorites-list div {
+            padding: 10px;
             cursor: pointer;
         }
-        #favorites-dropdown div:hover {
-            background-color: #f0f0f0; /* تمييز عند التحويم */
+        #favorites-list div:hover {
+            background-color: #f1f1f1;
         }
     </style>
 </head>
 <body>
-    <h1>مؤشر العملات</h1>
-    
-    <input type="text" id="favoriteCurrency" placeholder="أدخل اسم العملة هنا">
-    <button onclick="addFavorite()">أضف إلى المفضلة</button>
-    
-    <button onclick="toggleFavorites()">🎉 المفضلة</button>
-    <div id="favorites-dropdown"></div>
+    <h1>Cryptocurrency Indicators</h1>
+
+    <div id="favorites-container">
+        <button onclick="toggleFavorites()">Favorites ▼</button>
+        <div id="favorites-list"></div>
+    </div>
+
+    <input type="text" id="cryptoInput" placeholder="Add to favorites">
+    <button onclick="addFavorite()">Add</button>
 
     <script>
         const favorites = [];
 
         function toggleFavorites() {
-            const dropdown = document.getElementById('favorites-dropdown');
-            dropdown.style.display = (dropdown.style.display === 'none' || dropdown.style.display === '') ? 'block' : 'none';
+            const favoritesList = document.getElementById('favorites-list');
+            favoritesList.style.display = favoritesList.style.display === 'none' ? 'block' : 'none';
             displayFavorites();
         }
 
         function addFavorite() {
-            const currency = document.getElementById('favoriteCurrency').value.trim();
-            if (currency && !favorites.includes(currency)) {
-                favorites.push(currency);
-                document.getElementById('favoriteCurrency').value = ''; // مسح حقل الإدخال
-                displayFavorites();
-            } else {
-                alert('يرجى إدخال اسم عملة فريد.');
+            const cryptoInput = document.getElementById('cryptoInput').value.trim();
+            if (cryptoInput && !favorites.includes(cryptoInput)) {
+                favorites.push(cryptoInput);
+                document.getElementById('cryptoInput').value = ''; // Clear input
             }
+            displayFavorites();
         }
 
         function displayFavorites() {
-            const dropdown = document.getElementById('favorites-dropdown');
-            dropdown.innerHTML = ''; // مسح المحتوى السابق
-            favorites.forEach(fav => {
+            const favoritesList = document.getElementById('favorites-list');
+            favoritesList.innerHTML = '';
+            favorites.forEach(favorite => {
                 const div = document.createElement('div');
-                div.innerText = fav;
-                dropdown.appendChild(div);
+                div.textContent = favorite;
+                favoritesList.appendChild(div);
             });
+        }
+
+        // Close the favorites dropdown if clicked outside
+        window.onclick = function(event) {
+            if (!event.target.matches('#favorites-container button')) {
+                const favoritesList = document.getElementById('favorites-list');
+                if (favoritesList.style.display === 'block') {
+                    favoritesList.style.display = 'none';
+                }
+            }
         }
     </script>
 </body>
