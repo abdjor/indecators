@@ -16,6 +16,19 @@
             height: 100vh;
         }
 
+        /* زر المفضلة */
+        .favorite-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
         /* تقسيم الصفحة إلى نصفين */
         .container {
             display: flex;
@@ -58,6 +71,8 @@
 </head>
 <body>
 
+    <button class="favorite-button" onclick="toggleFavorites()">✨ المفضلة</button>
+
     <div class="container">
         <div class="box" onclick="location.href='details-rsi.html'">RSI</div>
         <div class="box" onclick="location.href='details-macd.html'">MACD</div>
@@ -71,6 +86,13 @@
         <div class="box" onclick="location.href='details-trend.html'">Trend</div>
         <div class="box" onclick="location.href='details-fear-greed.html'">Fear and Greed</div>
     </div>
+
+    <script>
+        function toggleFavorites() {
+            alert("هنا يمكنك إضافة العملات إلى المفضلة.");
+            // يمكنك إضافة منطق لإدارة المفضلة هنا
+        }
+    </script>
 
 </body>
 </html>
