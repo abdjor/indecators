@@ -1,76 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المفضلة</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        #favorites-container {
-            margin-top: 20px;
-        }
-        #favorites-list {
-            display: none;
-            border: 1px solid #ccc;
-            max-height: 100px;
-            overflow-y: auto;
-        }
-        #favorites-list div {
-            padding: 5px;
-            cursor: pointer;
-        }
-        #favorites-list div:hover {
-            background-color: #f0f0f0;
-        }
-    </style>
-</head>
-<body>
-    <h1>إدارة المفضلة</h1>
-    
-    <div>
-        <input type="text" id="favoriteCurrency" placeholder="أدخل اسم العملة هنا">
-        <button onclick="addFavorite()">أضف إلى المفضلة</button>
-    </div>
-    
-    <div id="favorites-container">
-        <button onclick="toggleFavorites()">🎉 المفضلة</button>
-        <div id="favorites-list"></div>
-    </div>
+<div id="favorites-container">
+    <button onclick="toggleFavorites()">🎉 المفضلة</button>
+    <div id="favorites-list" style="display: none;"></div>
+    <input type="text" id="favoriteCurrency" placeholder="أدخل اسم العملة هنا">
+    <button onclick="addFavorite()">أضف إلى المفضلة</button>
+</div>
 
-    <script>
-        const favorites = [];
+<script>
+    const favorites = [];
 
-        function toggleFavorites() {
-            const favoritesList = document.getElementById('favorites-list');
-            if (favoritesList.style.display === 'none') {
-                favoritesList.style.display = 'block';
-                displayFavorites();
-            } else {
-                favoritesList.style.display = 'none';
-            }
+    function toggleFavorites() {
+        const favoritesList = document.getElementById('favorites-list');
+        if (favoritesList.style.display === 'none') {
+            favoritesList.style.display = 'block';
+            displayFavorites();
+        } else {
+            favoritesList.style.display = 'none';
         }
+    }
 
-        function addFavorite() {
-            const currency = document.getElementById('favoriteCurrency').value;
-            if (currency && !favorites.includes(currency)) {
-                favorites.push(currency);
-                document.getElementById('favoriteCurrency').value = '';
-                displayFavorites();
-            }
+    function addFavorite() {
+        const currency = document.getElementById('favoriteCurrency').value;
+        if (currency && !favorites.includes(currency)) {
+            favorites.push(currency);
+            document.getElementById('favoriteCurrency').value = '';
+            displayFavorites();
         }
+    }
 
-        function displayFavorites() {
-            const favoritesList = document.getElementById('favorites-list');
-            favoritesList.innerHTML = '';
-            favorites.forEach(fav => {
-                const div = document.createElement('div');
-                div.innerText = fav;
-                div.onclick = () => { alert(`Selected: ${fav}`); /* يمكنك إضافة منطق البحث هنا */ };
-                favoritesList.appendChild(div);
-            });
-        }
-    </script>
-</body>
-</html>
+    function displayFavorites() {
+        const favoritesList = document.getElementById('favorites-list');
+        favoritesList.innerHTML = '';
+        favorites.forEach(fav => {
+            const div = document.createElement('div');
+            div.innerText = fav;
+            div.onclick = () => { alert(`Selected: ${fav}`); /* يمكنك إضافة منطق البحث هنا */ };
+            favoritesList.appendChild(div);
+        });
+    }
+</script>
