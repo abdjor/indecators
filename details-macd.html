@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مؤشر MACD (MACD)</title>
+    <title>مؤشر macd (MACD)</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
     <style>
@@ -11,68 +11,47 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
-        .indicator-description {
+        #timeframe {
             margin-bottom: 20px;
         }
-        #search-container {
-            margin-bottom: 20px;
-        }
-        #settings-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        #divergence {
+        #favorite-section {
             margin-top: 20px;
-            font-weight: bold;
-            color: red; /* لون لافت للانتباه */
-        }
-        #analysis {
-            margin-top: 20px;
-            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <h1 id="indicator-title">مؤشر ماكد (MACD) للعملة: <span id="crypto-name"> - </span></h1>
     
-    <button id="settings-button" onclick="toggleSettings()">⚙️ إعدادات</button>
-    
-    <div id="search-container">
-        <input type="text" id="cryptoName" placeholder="أدخل اسم العملة هنا">
-        <button onclick="searchCrypto()">بحث</button>
-    </div>
-    
-    <div class="indicator-description">
-        <p><strong>مؤشر ماكد (MACD):</strong> يقيس الفرق بين متوسطين متحركين، مما يساعد في تحديد اتجاه الاتجاهات.</p>
-    </div>
+    <label for="timeframe">اختر الفريم الزمني:</label>
+    <select id="timeframe" onchange="updateMACDData()">
+        <option value="1m">دقيقة</option>
+        <option value="5m">5 دقائق</option>
+        <option value="15m">15 دقيقة</option>
+        <option value="1h">ساعة</option>
+        <option value="1d">يوم</option>
+        <option value="1w">أسبوع</option>
+        <option value="1M">شهر</option>
+        <option value="1y">سنة</option>
+    </select>
     
     <canvas id="macdChart" width="400" height="200"></canvas>
-    <div id="divergence"></div>
-    <div id="analysis"></div>
-    <button onclick="location.href='index.html'">عودة</button>
+
+    <div id="favorite-section">
+        <h3>المفضلة</h3>
+        <input type="text" id="favorite-input" placeholder="أضف عملة إلى المفضلة">
+        <button onclick="addToFavorites()">أضف</button>
+        <ul id="favorites-list"></ul>
+    </div>
 
     <script>
-        // بيانات لمؤشر MACD (يمكنك استبدالها ببيانات حقيقية)
-        const macdData = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-            data: [1, 2, 0, -1, -2, -1],
-        };
-
         const ctx = document.getElementById('macdChart').getContext('2d');
         const macdChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: macdData.labels,
+                labels: [], // سيتم تحديثها لاحقًا
                 datasets: [{
                     label: 'MACD',
-                    data: macdData.data,
+                    data: [], // سيتم تحديثها لاحقًا
                     borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 2,
                     fill: false
@@ -86,126 +65,37 @@
                         min: -5,
                         max: 5,
                     }
-                },
-                plugins: {
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: -5,
-                                yMax: -5,
-                                borderColor: 'orange',
-                                borderWidth: 2,
-                                label: {
-                                    content: 'مستوى قاع (-5)',
-                                    enabled: true,
-                                    position: 'start',
-                                    backgroundColor: 'white',
-                                    color: 'orange'
-                                }
-                            },
-                            line2: {
-                                type: 'line',
-                                yMin: -2,
-                                yMax: -2,
-                                borderColor: 'red',
-                                borderWidth: 2,
-                                label: {
-                                    content: 'مستوى قاع (-2)',
-                                    enabled: true,
-                                    position: 'start',
-                                    backgroundColor: 'white',
-                                    color: 'red'
-                                }
-                            },
-                            line3: {
-                                type: 'line',
-                                yMin: 2,
-                                yMax: 2,
-                                borderColor: 'lightgreen',
-                                borderWidth: 2,
-                                label: {
-                                    content: 'مستوى سقف (2)',
-                                    enabled: true,
-                                    position: 'start',
-                                    backgroundColor: 'white',
-                                    color: 'lightgreen'
-                                }
-                            },
-                            line4: {
-                                type: 'line',
-                                yMin: 5,
-                                yMax: 5,
-                                borderColor: 'blue',
-                                borderWidth: 2,
-                                label: {
-                                    content: 'مستوى سقف (5)',
-                                    enabled: true,
-                                    position: 'start',
-                                    backgroundColor: 'white',
-                                    color: 'blue'
-                                }
-                            }
-                        }
-                    }
                 }
             }
         });
 
-        function searchCrypto() {
-            const cryptoName = document.getElementById('cryptoName').value;
-            if (!cryptoName) {
-                alert('يرجى إدخال اسم العملة.');
-                return;
-            }
-
-            // تحديث اسم العملة في العنوان
-            document.getElementById('crypto-name').innerText = cryptoName;
-
-            // منطق البحث عن العملة
-            const hasDivergence = Math.random() < 0.5; // مثال عشوائي لتحديد وجود دايفرجنس
-
-            if (hasDivergence) {
-                document.getElementById('divergence').innerText = `يوجد دايفرجنس إيجابي للعملة: ${cryptoName}`;
-            } else {
-                document.getElementById('divergence').innerText = `لا يوجد دايفرجنس للعملة: ${cryptoName}`;
-            }
-
-            // تحليل الحالة الحالية
-            analyzeMACD(macdChart.data.datasets[0].data);
-
-            // إعادة تحميل البيانات (يمكنك تحديث البيانات الفعلية هنا)
-            updateMACDData(cryptoName);
-        }
-
-        function updateMACDData(cryptoName) {
-            // هنا يمكنك إضافة منطق لتحميل بيانات MACD الخاصة بالعملة المحددة
-            // يمكن أن يكون هذا عن طريق API، ولكن في هذا المثال سأقوم بتحديث البيانات بشكل عشوائي
-            const newData = [Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * 10 - 5];
+        function updateMACDData() {
+            const selectedTimeframe = document.getElementById('timeframe').value;
+            // هنا يمكنك إضافة منطق لتحميل بيانات MACD الخاصة بالفريم الزمني المحدد
+            // هذا مثال بسيط يتم فيه تحديث البيانات بشكل عشوائي
+            const newData = Array.from({ length: 6 }, () => Math.random() * 10 - 5);
+            const newLabels = Array.from({ length: 6 }, (_, i) => `${i + 1} ${selectedTimeframe}`);
+            macdChart.data.labels = newLabels;
             macdChart.data.datasets[0].data = newData;
             macdChart.update();
-
-            // إعادة تحليل الحالة بعد تحديث البيانات
-            analyzeMACD(newData);
         }
 
-        function analyzeMACD(data) {
-            const lastValue = data[data.length - 1];
-            const analysisDiv = document.getElementById('analysis');
-
-            if (lastValue < -2) {
-                analysisDiv.innerText = "Oversell - Buy possible";
-            } else if (lastValue > 2) {
-                analysisDiv.innerText = "Overbought - Sell possible";
+        function addToFavorites() {
+            const favoriteInput = document.getElementById('favorite-input');
+            const favoriteValue = favoriteInput.value.trim();
+            if (favoriteValue) {
+                const favoritesList = document.getElementById('favorites-list');
+                const newFavoriteItem = document.createElement('li');
+                newFavoriteItem.textContent = favoriteValue;
+                favoritesList.appendChild(newFavoriteItem);
+                favoriteInput.value = ''; // إفراغ خانة الإدخال بعد الإضافة
             } else {
-                analysisDiv.innerText = "Neutral";
+                alert("يرجى إدخال اسم العملة");
             }
         }
 
-        function toggleSettings() {
-            alert("هنا يمكنك إضافة خيارات الإعدادات لتخصيص مؤشراتك.");
-            // يمكنك إضافة خيارات الإعدادات هنا لتغيير القيم أو إضافة ميزات أخرى
-        }
+        // استدعاء الدالة لتحديث البيانات عند تحميل الصفحة
+        updateMACDData();
     </script>
 </body>
 </html>
