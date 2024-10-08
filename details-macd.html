@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="api.js"></script> <!-- تأكد من أن هذا السطر في مكانه الصحيح -->
+    <script src="api.js"></script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -131,7 +131,7 @@
         async function loadMACDData(crypto, timeframe) {
             const prices = await fetchCryptoData(crypto, timeframe);
 
-            // حساب MACD و Signal و Histogram (يمكنك استخدام مكتبة أو حسابها يدويًا)
+            // حساب MACD و Signal (يمكنك استخدام مكتبة أو حسابها يدويًا)
             const macdData = calculateMACD(prices);
             const signalData = calculateSignal(macdData);
 
@@ -185,7 +185,6 @@
         function calculateMACD(prices) {
             const shortTerm = 12; // فترة قصيرة
             const longTerm = 26; // فترة طويلة
-            const signalPeriod = 9; // فترة الإشارة
             
             const macd = []; // مصفوفة لمؤشر MACD
 
