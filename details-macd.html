@@ -33,6 +33,10 @@
             font-weight: bold;
             color: red; /* لون لافت للانتباه */
         }
+        #analysis {
+            margin-top: 20px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -51,6 +55,7 @@
     
     <canvas id="macdChart" width="400" height="200"></canvas>
     <div id="divergence"></div>
+    <div id="analysis"></div>
     <button onclick="location.href='index.html'">عودة</button>
 
     <script>
@@ -158,7 +163,6 @@
             document.getElementById('crypto-name').innerText = cryptoName;
 
             // منطق البحث عن العملة
-            // هنا يمكنك إضافة منطق لتحميل بيانات العملة الفعلي من واجهة برمجة التطبيقات (API)
             const hasDivergence = Math.random() < 0.5; // مثال عشوائي لتحديد وجود دايفرجنس
 
             if (hasDivergence) {
@@ -166,6 +170,9 @@
             } else {
                 document.getElementById('divergence').innerText = `لا يوجد دايفرجنس للعملة: ${cryptoName}`;
             }
+
+            // تحليل الحالة الحالية
+            analyzeMACD(macdChart.data.datasets[0].data);
 
             // إعادة تحميل البيانات (يمكنك تحديث البيانات الفعلية هنا)
             updateMACDData(cryptoName);
@@ -177,6 +184,22 @@
             const newData = [Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * 10 - 5];
             macdChart.data.datasets[0].data = newData;
             macdChart.update();
+
+            // إعادة تحليل الحالة بعد تحديث البيانات
+            analyzeMACD(newData);
+        }
+
+        function analyzeMACD(data) {
+            const lastValue = data[data.length - 1];
+            const analysisDiv = document.getElementById('analysis');
+
+            if (lastValue < -2) {
+                analysisDiv.innerText = "Oversell - Buy possible";
+            } else if (lastValue > 2) {
+                analysisDiv.innerText = "Overbought - Sell possible";
+            } else {
+                analysisDiv.innerText = "Neutral";
+            }
         }
 
         function toggleSettings() {
