@@ -20,11 +20,17 @@
         #favorites-list {
             list-style-type: none;
             padding: 0;
+            display: none; /* إخفاء القائمة بشكل افتراضي */
         }
         #favorites-list li {
             cursor: pointer;
             color: blue;
             text-decoration: underline;
+        }
+        #crypto-name {
+            text-align: center; /* لتوسيط الاسم */
+            font-size: 24px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -34,9 +40,10 @@
         <input type="text" id="favorite-input" placeholder="أضف عملة إلى المفضلة">
         <button onclick="addToFavorites()">أضف</button>
         <ul id="favorites-list"></ul>
+        <button onclick="toggleFavorites()">عرض/إخفاء المفضلة</button>
     </div>
 
-    <h1 id="indicator-title">مؤشر ماكد (MACD) للعملة: <span id="crypto-name"> - </span></h1>
+    <div id="crypto-name">مؤشر ماكد (MACD) للعملة: <span id="selected-crypto-name"> - </span></div>
     
     <label for="timeframe">اختر الفريم الزمني:</label>
     <select id="timeframe" onchange="updateMACDData()">
@@ -81,7 +88,7 @@
 
         function updateMACDData(cryptoName = '') {
             const selectedTimeframe = document.getElementById('timeframe').value;
-            document.getElementById('crypto-name').textContent = cryptoName || ' - ';
+            document.getElementById('selected-crypto-name').textContent = cryptoName || ' - ';
             // هنا يمكنك إضافة منطق لتحميل بيانات MACD الخاصة بالفريم الزمني المحدد
             // هذا مثال بسيط يتم فيه تحديث البيانات بشكل عشوائي
             const newData = Array.from({ length: 6 }, () => Math.random() * 10 - 5);
@@ -107,6 +114,11 @@
             } else {
                 alert("يرجى إدخال اسم العملة");
             }
+        }
+
+        function toggleFavorites() {
+            const favoritesList = document.getElementById('favorites-list');
+            favoritesList.style.display = favoritesList.style.display === 'none' ? 'block' : 'none';
         }
 
         // استدعاء الدالة لتحديث البيانات عند تحميل الصفحة
