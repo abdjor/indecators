@@ -38,13 +38,13 @@
     </div>
     <canvas id="rsiChart" width="400" height="200"></canvas>
     <div id="divergence"></div>
-    <button onclick="location.href='index.html'">Go Back</button>
+    <button onclick="location.href='index.html'">عودة</button>
 
     <script>
-        // بيانات لمؤشر RSI
+        // مثال بيانات لمؤشر RSI
         const rsiData = {
             labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-            data: [70, 80, 50, 40, 20, 30], // يمكن تعديلها لتناسب البيانات الحقيقية
+            data: [70, 80, 50, 40, 20, 30], // البيانات يمكن أن تكون تمثيلًا تاريخيًا
         };
 
         const ctx = document.getElementById('rsiChart').getContext('2d');
@@ -69,10 +69,7 @@
                         max: 100,
                         ticks: {
                             callback: function(value) {
-                                if (value === 30 || value === 75) {
-                                    return value; // لإظهار القيم عند الخطوط
-                                }
-                                return value;
+                                return value; // عرض القيم على الخطوط
                             }
                         }
                     }
@@ -112,7 +109,7 @@
 
         function searchCrypto() {
             const cryptoName = document.getElementById('cryptoName').value;
-            // منطق البحث عن العملة والتحقق من الدايفرجنس
+            // هنا يمكنك إضافة منطق لتحميل بيانات العملة
             const hasDivergence = Math.random() < 0.5; // مثال عشوائي لتحديد وجود دايفرجنس
 
             if (hasDivergence) {
