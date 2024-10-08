@@ -3,78 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Indicators</title>
+    <title>زر لإضافة عنصر</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
         }
-        #favorites-container {
-            position: relative;
-            display: inline-block;
+        #item-list {
+            margin-top: 20px;
+            list-style-type: none; /* إزالة النقاط من القائمة */
+            padding: 0;
         }
-        #favorites-list {
-            display: none;
-            position: absolute;
-            background-color: white;
-            border: 1px solid #ccc;
-            z-index: 1;
-        }
-        #favorites-list div {
-            padding: 10px;
-            cursor: pointer;
-        }
-        #favorites-list div:hover {
-            background-color: #f1f1f1;
+        #item-list li {
+            padding: 8px;
+            background-color: #f0f0f0;
+            margin: 5px 0;
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
-    <h1>Cryptocurrency Indicators</h1>
+    <h1>إضافة عنصر إلى القائمة</h1>
 
-    <div id="favorites-container">
-        <button onclick="toggleFavorites()">Favorites ▼</button>
-        <div id="favorites-list"></div>
-    </div>
+    <input type="text" id="itemInput" placeholder="أدخل شيئًا هنا">
+    <button onclick="addItem()">إضافة</button>
 
-    <input type="text" id="cryptoInput" placeholder="Add to favorites">
-    <button onclick="addFavorite()">Add</button>
+    <ul id="item-list"></ul>
 
     <script>
-        const favorites = [];
+        function addItem() {
+            const itemInput = document.getElementById('itemInput');
+            const itemText = itemInput.value.trim(); // الحصول على النص وإزالة الفراغات
 
-        function toggleFavorites() {
-            const favoritesList = document.getElementById('favorites-list');
-            favoritesList.style.display = favoritesList.style.display === 'none' ? 'block' : 'none';
-            displayFavorites();
-        }
-
-        function addFavorite() {
-            const cryptoInput = document.getElementById('cryptoInput').value.trim();
-            if (cryptoInput && !favorites.includes(cryptoInput)) {
-                favorites.push(cryptoInput);
-                document.getElementById('cryptoInput').value = ''; // Clear input
-            }
-            displayFavorites();
-        }
-
-        function displayFavorites() {
-            const favoritesList = document.getElementById('favorites-list');
-            favoritesList.innerHTML = '';
-            favorites.forEach(favorite => {
-                const div = document.createElement('div');
-                div.textContent = favorite;
-                favoritesList.appendChild(div);
-            });
-        }
-
-        // Close the favorites dropdown if clicked outside
-        window.onclick = function(event) {
-            if (!event.target.matches('#favorites-container button')) {
-                const favoritesList = document.getElementById('favorites-list');
-                if (favoritesList.style.display === 'block') {
-                    favoritesList.style.display = 'none';
-                }
+            if (itemText) {
+                const listItem = document.createElement('li'); // إنشاء عنصر قائمة جديد
+                listItem.textContent = itemText; // تعيين النص لعنصر القائمة
+                document.getElementById('item-list').appendChild(listItem); // إضافة عنصر القائمة إلى القائمة
+                itemInput.value = ''; // مسح حقل الإدخال
+            } else {
+                alert('يرجى إدخال نص.'); // رسالة خطأ إذا كان الحقل فارغًا
             }
         }
     </script>
