@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مؤشر مع قائمة المفضلة</title>
+    <title>مثال على قائمة المفضلة</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -62,16 +62,13 @@
 <button onclick="addToFavorites()">إضافة للمفضلة</button>
 
 <script>
-    // Array to hold favorite cryptos
     let favorites = [];
 
-    // Function to toggle the favorites dropdown
     function toggleDropdown() {
         const favList = document.getElementById('fav-list');
         favList.style.display = favList.style.display === 'block' ? 'none' : 'block';
     }
 
-    // Function to add a new crypto to the favorites list
     function addToFavorites() {
         const cryptoInput = document.getElementById('crypto-input');
         const cryptoName = cryptoInput.value.trim();
@@ -85,7 +82,6 @@
         }
     }
 
-    // Function to update the favorites dropdown list
     function updateFavorites() {
         const favList = document.getElementById('fav-list');
         favList.innerHTML = '';  // Clear the current list
@@ -98,7 +94,6 @@
         });
     }
 
-    // Close the dropdown if the user clicks outside of it
     window.onclick = function(event) {
         if (!event.target.matches('#fav-button')) {
             const favList = document.getElementById('fav-list');
