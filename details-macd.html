@@ -47,6 +47,7 @@
 
     <canvas id="macdChart" width="400" height="200"></canvas>
     <script>
+        const ctx = document.getElementById('macdChart').getContext('2d');
         let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
         const favoritesList = document.getElementById('favorites-list');
         const cryptoNameElement = document.getElementById('crypto-name');
@@ -80,11 +81,50 @@
 
         function setCryptoName(name) {
             cryptoNameElement.textContent = name; // تغيير اسم العملة
-            // هنا يمكن إضافة الكود لتحميل بيانات العملة المحددة
+            // هنا يمكن إضافة الكود لتحميل بيانات العملة المحددة وعرض الشارت
+            loadMACDData(name);
+        }
+
+        function loadMACDData(crypto) {
+            // استخدم هنا API لتحميل بيانات MACD للعملة المحددة
+            // سأقوم بتحديث البيانات الافتراضية كمثال
+            const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+            const macdData = [1, 0, -1, 0, 1, -1, 1]; // بيانات عشوائية كمثال
+            const signalData = [0, 1, 0, -1, 0, 1, 0]; // بيانات عشوائية كمثال
+
+            const macdChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'MACD',
+                            data: macdData,
+                            borderColor: 'blue',
+                            fill: false
+                        },
+                        {
+                            label: 'Signal',
+                            data: signalData,
+                            borderColor: 'orange',
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
         }
 
         // عرض قائمة المفضلة عند تحميل الصفحة
         updateFavoritesList();
+        loadMACDData('عملة افتراضية'); // تحميل بيانات عملة افتراضية عند التحميل
     </script>
 </body>
 </html>
