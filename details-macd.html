@@ -2,12 +2,10 @@
 <html lang="en">
 <head>
     <script src="api.js"></script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مؤشر ماكد (MACD)</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -124,62 +122,70 @@
 
         async function fetchCryptoData(crypto, timeframe) {
             const response = await fetch(`https://api.coingecko.com/api/v3/coins/${crypto}/market_chart?vs_currency=usd&days=7&interval=${timeframe}`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
             const data = await response.json();
             return data.prices.map(price => price[1]); // إرجاع الأسعار فقط
         }
 
         async function loadMACDData(crypto, timeframe) {
-            const prices = await fetchCryptoData(crypto, timeframe);
+            try {
+                const prices = await fetchCryptoData(crypto, timeframe);
 
-            // حساب MACD و Signal (يمكنك استخدام مكتبة أو حسابها يدويًا)
-            const macdData = calculateMACD(prices);
-            const signalData = calculateSignal(macdData);
+                // حساب MACD و Signal
+                const macdData = calculateMACD(prices);
+                const signalData = calculateSignal(macdData);
 
-            // تحديد حالة السوق بناءً على آخر قيمة MACD
-            const lastMacdValue = macdData[macdData.length - 1];
-            let marketCondition = '';
-            if (lastMacdValue < -2) {
-                marketCondition = 'Oversold - Buy possible';
-            } else if (lastMacdValue > 2) {
-                marketCondition = 'Overbought - Sell possible';
-            } else {
-                marketCondition = 'Neutral';
-            }
-            marketConditionElement.textContent = marketCondition; // تحديث حالة السوق
+                // تحديد حالة السوق بناءً على آخر قيمة MACD
+                const lastMacdValue = macdData[macdData.length - 1];
+                let marketCondition = '';
+                if (lastMacdValue < -2) {
+                    marketCondition = 'Oversold - Buy possible';
+                } else if (lastMacdValue > 2) {
+                    marketCondition = 'Overbought - Sell possible';
+                } else {
+                    marketCondition = 'Neutral';
+                }
+                marketConditionElement.textContent = marketCondition; // تحديث حالة السوق
 
-            // تحديث الشارت أو إنشاءه إذا لم يكن موجودًا
-            if (macdChart) {
-                macdChart.destroy(); // تدمير الشارت الحالي
-            }
+                // تحديث الشارت أو إنشاءه إذا لم يكن موجودًا
+                if (macdChart) {
+                    macdChart.destroy(); // تدمير الشارت الحالي
+                }
 
-            macdChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: Array.from({length: macdData.length}, (_, i) => i + 1), // تسميات عشوائية كمثال
-                    datasets: [
-                        {
-                            label: 'MACD',
-                            data: macdData,
-                            borderColor: 'blue',
-                            fill: false
-                        },
-                        {
-                            label: 'Signal',
-                            data: signalData,
-                            borderColor: 'orange',
-                            fill: false
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
+                macdChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: Array.from({length: macdData.length}, (_, i) => i + 1), // تسميات عشوائية كمثال
+                        datasets: [
+                            {
+                                label: 'MACD',
+                                data: macdData,
+                                borderColor: 'blue',
+                                fill: false
+                            },
+                            {
+                                label: 'Signal',
+                                data: signalData,
+                                borderColor: 'orange',
+                                fill: false
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: false // نبدأ من الصفر أو نتركه للتحديد الذاتي
+                            }
                         }
                     }
-                }
-            });
+                });
+            } catch (error) {
+                console.error('Error loading MACD data:', error);
+                alert('خطأ في تحميل بيانات MACD. يرجى التحقق من الاسم أو الاتصال بالإنترنت.');
+            }
         }
 
         function calculateMACD(prices) {
