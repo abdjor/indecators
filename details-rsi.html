@@ -17,6 +17,17 @@
         #search-container {
             margin-bottom: 20px;
         }
+        #settings-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
         #divergence {
             margin-top: 20px;
             font-weight: bold;
@@ -26,10 +37,14 @@
 </head>
 <body>
     <h1 id="indicator-title">مؤشر القوة النسبية (RSI) للعملة: <span id="crypto-name"> - </span></h1>
+    
+    <button id="settings-button" onclick="toggleSettings()">⚙️ إعدادات</button>
+    
     <div id="search-container">
         <input type="text" id="cryptoName" placeholder="أدخل اسم العملة هنا">
         <button onclick="searchCrypto()">بحث</button>
     </div>
+    
     <div class="indicator-description">
         <p><strong>مؤشر القوة النسبية (RSI):</strong> يقيس سرعة وحركة تحركات الأسعار. يُستخدم لتحديد ظروف الشراء أو البيع.</p>
         <p><strong>مستويات العتبة:</strong> 
@@ -37,6 +52,7 @@
             - إذا كانت القيمة تحت 25، يعتبر السوق مشبعًا بالبيع.
         </p>
     </div>
+    
     <canvas id="rsiChart" width="400" height="200"></canvas>
     <div id="divergence"></div>
     <button onclick="location.href='index.html'">عودة</button>
@@ -105,6 +121,11 @@
 
         function searchCrypto() {
             const cryptoName = document.getElementById('cryptoName').value;
+            if (!cryptoName) {
+                alert('يرجى إدخال اسم العملة.');
+                return;
+            }
+
             // تحديث اسم العملة في العنوان
             document.getElementById('crypto-name').innerText = cryptoName;
 
@@ -128,6 +149,11 @@
             const newData = [Math.random() * 100, Math.random() * 100, Math.random() * 100, Math.random() * 100, Math.random() * 100, Math.random() * 100];
             rsiChart.data.datasets[0].data = newData;
             rsiChart.update();
+        }
+
+        function toggleSettings() {
+            alert("هنا يمكنك إضافة خيارات الإعدادات لتخصيص مؤشراتك.");
+            // يمكنك إضافة خيارات الإعدادات هنا لتغيير القيم أو إضافة ميزات أخرى
         }
     </script>
 </body>
