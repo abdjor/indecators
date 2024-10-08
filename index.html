@@ -19,22 +19,96 @@
             border-radius: 5px;
             margin-bottom: 20px;
         }
+        .indicator-description {
+            margin-bottom: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 <body>
-    <button id="favorite-button" onclick="addToFavorites()">إضافة إلى المفضلة</button>
-    
-    <h1>مؤشر MACD</h1>
-    <canvas id="macdChart" width="400" height="200"></canvas>
-    
+
+    <div class="container">
+        <button id="favorite-button" onclick="addToFavorites()">إضافة إلى المفضلة</button>
+        <h1>مؤشر MACD</h1>
+        
+        <div class="indicator-description">
+            <p><strong>مؤشر MACD:</strong> يقيس الفرق بين متوسطين متحركين، مما يساعد في تحديد الاتجاهات.</p>
+        </div>
+        
+        <canvas id="macdChart" width="400" height="200"></canvas>
+
+        <!-- جدول البيانات -->
+        <table>
+            <thead>
+                <tr>
+                    <th>التاريخ</th>
+                    <th>القيمة</th>
+                </tr>
+            </thead>
+            <tbody id="data-table-body">
+                <tr>
+                    <td>1 يناير</td>
+                    <td>1.2</td>
+                </tr>
+                <tr>
+                    <td>2 يناير</td>
+                    <td>2.5</td>
+                </tr>
+                <tr>
+                    <td>3 يناير</td>
+                    <td>-0.5</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
     <script>
         function addToFavorites() {
-            const cryptoName = document.getElementById('crypto-name').innerText;
+            const cryptoName = "MACD"; // يمكنك تغيير هذا لاسم العملة المطلوبة
             alert(cryptoName + ' تمت إضافته إلى المفضلة!');
-            // يمكنك هنا إضافة الكود لحفظ العملة في المفضلة، مثل استخدام localStorage
+            // يمكنك هنا إضافة الكود لحفظ العملة في المفضلة
         }
 
-        // بقية الكود الخاص بمؤشر MACD هنا...
+        // إعدادات الرسم البياني هنا...
+        const ctx = document.getElementById('macdChart').getContext('2d');
+        const macdChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March'],
+                datasets: [{
+                    label: 'MACD',
+                    data: [1, 2, 0],
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    }
+                }
+            }
+        });
     </script>
 </body>
 </html>
