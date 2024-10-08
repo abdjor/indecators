@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Favorite List Example</title>
+    <title>مؤشر مع قائمة المفضلة</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,19 +47,19 @@
 </head>
 <body>
 
-<h2>Favorites Dropdown Example</h2>
+<h2>مثال على قائمة المفضلة</h2>
 
 <!-- Dropdown button -->
 <div id="fav-dropdown">
-    <button id="fav-button" onclick="toggleDropdown()">Favorites ▼</button>
+    <button id="fav-button" onclick="toggleDropdown()">المفضلة ▼</button>
     <div id="fav-list">
         <!-- Favorites will be dynamically added here -->
     </div>
 </div>
 
 <!-- Input for adding new cryptos -->
-<input type="text" id="crypto-input" placeholder="Add new crypto" />
-<button onclick="addToFavorites()">Add to Favorites</button>
+<input type="text" id="crypto-input" placeholder="أدخل اسم العملة" />
+<button onclick="addToFavorites()">إضافة للمفضلة</button>
 
 <script>
     // Array to hold favorite cryptos
@@ -76,10 +76,12 @@
         const cryptoInput = document.getElementById('crypto-input');
         const cryptoName = cryptoInput.value.trim();
 
-        if (cryptoName !== '') {
+        if (cryptoName !== '' && !favorites.includes(cryptoName)) {
             favorites.push(cryptoName);
             updateFavorites();
             cryptoInput.value = '';  // Clear the input field
+        } else {
+            alert('يرجى إدخال اسم عملة صالح أو عدم تكرار العملة.');
         }
     }
 
@@ -94,6 +96,14 @@
             cryptoLink.textContent = crypto;
             favList.appendChild(cryptoLink);
         });
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function(event) {
+        if (!event.target.matches('#fav-button')) {
+            const favList = document.getElementById('fav-list');
+            favList.style.display = 'none';
+        }
     }
 </script>
 
