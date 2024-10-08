@@ -9,10 +9,6 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
-        #fav-dropdown {
-            position: relative;
-            display: inline-block;
-        }
         #fav-button {
             background-color: #007bff;
             color: white;
@@ -23,19 +19,17 @@
         }
         #fav-list {
             display: none;
-            position: absolute;
             background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            margin-top: 5px;
             min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
         }
-        #fav-list a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
+        #fav-list div {
+            padding: 8px;
+            cursor: pointer;
         }
-        #fav-list a:hover {
+        #fav-list div:hover {
             background-color: #f1f1f1;
         }
         #crypto-input {
@@ -49,17 +43,11 @@
 
 <h2>مثال على قائمة المفضلة</h2>
 
-<!-- Dropdown button -->
-<div id="fav-dropdown">
-    <button id="fav-button" onclick="toggleDropdown()">المفضلة ▼</button>
-    <div id="fav-list">
-        <!-- Favorites will be dynamically added here -->
-    </div>
-</div>
-
-<!-- Input for adding new cryptos -->
 <input type="text" id="crypto-input" placeholder="أدخل اسم العملة" />
-<button onclick="addToFavorites()">إضافة للمفضلة</button>
+<button id="add-button" onclick="addToFavorites()">إضافة للمفضلة</button>
+
+<button id="fav-button" onclick="toggleDropdown()">المفضلة ▼</button>
+<div id="fav-list"></div>
 
 <script>
     let favorites = [];
@@ -73,7 +61,7 @@
         const cryptoInput = document.getElementById('crypto-input');
         const cryptoName = cryptoInput.value.trim();
 
-        if (cryptoName !== '' && !favorites.includes(cryptoName)) {
+        if (cryptoName && !favorites.includes(cryptoName)) {
             favorites.push(cryptoName);
             updateFavorites();
             cryptoInput.value = '';  // Clear the input field
@@ -87,17 +75,16 @@
         favList.innerHTML = '';  // Clear the current list
 
         favorites.forEach((crypto) => {
-            const cryptoLink = document.createElement('a');
-            cryptoLink.href = '#';
-            cryptoLink.textContent = crypto;
-            favList.appendChild(cryptoLink);
+            const cryptoItem = document.createElement('div');
+            cryptoItem.textContent = crypto;
+            favList.appendChild(cryptoItem);
         });
     }
 
+    // Close the dropdown if the user clicks outside of it
     window.onclick = function(event) {
         if (!event.target.matches('#fav-button')) {
-            const favList = document.getElementById('fav-list');
-            favList.style.display = 'none';
+            document.getElementById('fav-list').style.display = 'none';
         }
     }
 </script>
