@@ -4,49 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مؤشرات السوق</title>
-    <link rel="stylesheet" href="styles.css"> <!-- رابط إلى ملف CSS إن كان لديك -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css"> <!-- إذا كنت تستخدم ملف CSS -->
 </head>
 <body>
     <header>
         <h1>مؤشرات السوق</h1>
-        <div id="favorites-container">
-            <button id="favorites-button">⭐ المفضلة</button>
-            <div id="favorites-dropdown" style="display: none;">
-                <ul id="favorites-list"></ul>
-                <input type="text" id="favorite-input" placeholder="أدخل اسم العملة">
-                <button id="add-favorite">إضافة</button>
-            </div>
-        </div>
+        <button id="settings-button" onclick="toggleSettings()">⚙️ إعدادات</button>
     </header>
 
-    <main>
-        <h2>اختر المؤشر</h2>
-        <ul>
-            <li><a href="rsi.html">مؤشر RSI</a></li>
-            <li><a href="macd.html">مؤشر MACD</a></li>
-            <li><a href="adx.html">مؤشر ADX</a></li>
-            <!-- أضف المزيد من الروابط للمؤشرات هنا -->
-        </ul>
-    </main>
+    <div id="favorites-container">
+        <h2>المفضلة</h2>
+        <select id="favorites-dropdown">
+            <option>اختر عملة من المفضلة</option>
+            <!-- ستضاف العملات المفضلة هنا -->
+        </select>
+        <button onclick="addFavorite()">إضافة عملة</button>
+    </div>
+
+    <div id="indicators-container">
+        <h2>المؤشرات</h2>
+        <table>
+            <tr>
+                <td><a href="rsi.html">مؤشر RSI</a></td>
+                <td><a href="macd.html">مؤشر MACD</a></td>
+                <td><a href="adx.html">مؤشر ADX</a></td>
+            </tr>
+            <tr>
+                <td><a href="vol.html">مؤشر VOL</a></td>
+                <td><a href="fibo.html">Fibonacci Retracement</a></td>
+                <td><a href="support-resistance.html">مستويات الدعم والمقاومة</a></td>
+            </tr>
+            <tr>
+                <td><a href="harmonic.html">Harmonic</a></td>
+                <td><a href="trend.html">مؤشر الاتجاه</a></td>
+                <td><a href="fear-greed.html">Fear and Greed</a></td>
+            </tr>
+        </table>
+    </div>
 
     <script>
-        document.getElementById('favorites-button').addEventListener('click', function() {
-            const dropdown = document.getElementById('favorites-dropdown');
-            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
-        });
-
-        document.getElementById('add-favorite').addEventListener('click', function() {
-            const input = document.getElementById('favorite-input');
-            const favoritesList = document.getElementById('favorites-list');
-
-            if (input.value.trim() !== "") {
-                const listItem = document.createElement('li');
-                listItem.textContent = input.value;
-                favoritesList.appendChild(listItem);
-                input.value = ""; // مسح محتوى الحقل
+        function addFavorite() {
+            // منطق لإضافة العملات إلى المفضلة
+            const favoriteName = prompt("أدخل اسم العملة المفضلة:");
+            if (favoriteName) {
+                const option = document.createElement("option");
+                option.text = favoriteName;
+                document.getElementById("favorites-dropdown").add(option);
             }
-        });
+        }
+
+        function toggleSettings() {
+            alert("هنا يمكنك إضافة خيارات الإعدادات لتخصيص مؤشراتك.");
+        }
     </script>
 </body>
 </html>
