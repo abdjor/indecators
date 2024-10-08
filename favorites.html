@@ -3,11 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>زر لإضافة عنصر</title>
+    <title>زر مفضل لإضافة عنصر</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
         }
         #item-list {
             margin-top: 20px;
@@ -20,13 +29,19 @@
             margin: 5px 0;
             border-radius: 4px;
         }
+        #itemInput {
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
-    <h1>إضافة عنصر إلى القائمة</h1>
-
-    <input type="text" id="itemInput" placeholder="أدخل شيئًا هنا">
-    <button onclick="addItem()">إضافة</button>
+    <header>
+        <h1>مفضلة العملات</h1>
+        <div>
+            <input type="text" id="itemInput" placeholder="أدخل شيئًا هنا">
+            <button onclick="addItem()">إضافة</button>
+        </div>
+    </header>
 
     <ul id="item-list"></ul>
 
