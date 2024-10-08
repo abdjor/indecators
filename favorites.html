@@ -18,29 +18,29 @@
             border: 1px solid #ccc;
             max-height: 150px;
             overflow-y: auto;
-            display: none; /* Initially hidden */
+            display: none; /* مخفي بشكل افتراضي */
             position: absolute;
             background: white;
             z-index: 10;
-            width: 200px; /* Width of the list */
+            width: 200px; /* عرض القائمة */
         }
         #favorites-list div {
             padding: 5px;
             cursor: pointer;
         }
         #favorites-list div:hover {
-            background-color: #f0f0f0; /* Highlight on hover */
+            background-color: #f0f0f0; /* تمييز عند التحويم */
         }
     </style>
 </head>
 <body>
-    <h1>Favorites System</h1>
+    <h1>نظام المفضلة</h1>
 
     <div id="favorites-container">
-        <button onclick="toggleFavorites()">🎉 Favorites</button>
+        <button onclick="toggleFavorites()">🎉 المفضلة</button>
         <div id="favorites-list"></div>
-        <input type="text" id="favoriteCurrency" placeholder="Enter currency name here">
-        <button onclick="addFavorite()">Add to Favorites</button>
+        <input type="text" id="favoriteCurrency" placeholder="أدخل اسم العملة هنا">
+        <button onclick="addFavorite()">أضف إلى المفضلة</button>
     </div>
 
     <script>
@@ -59,7 +59,7 @@
                 document.getElementById('favoriteCurrency').value = '';
                 displayFavorites();
             } else {
-                alert('Please enter a unique currency name.');
+                alert('يرجى إدخال اسم عملة فريد.');
             }
         }
 
@@ -69,7 +69,7 @@
             favorites.forEach(fav => {
                 const div = document.createElement('div');
                 div.innerText = fav;
-                div.onclick = () => { alert(`Selected: ${fav}`); /* Add search logic here */ };
+                div.onclick = () => { alert(`تم اختيار: ${fav}`); /* يمكنك إضافة منطق البحث هنا */ };
                 favoritesList.appendChild(div);
             });
         }
