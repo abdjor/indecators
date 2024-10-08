@@ -10,11 +10,20 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
+        .indicator-description {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
-    <h1>RSI Indicator</h1>
-    <p>This is the detail page for the RSI indicator.</p>
+    <h1>مؤشر القوة النسبية (RSI)</h1>
+    <div class="indicator-description">
+        <p><strong>مؤشر القوة النسبية (RSI):</strong> يقيس سرعة وحركة تحركات الأسعار. يُستخدم لتحديد ظروف الشراء أو البيع.</p>
+        <p><strong>مستويات العتبة:</strong> 
+            - إذا كانت القيمة فوق 70، يعتبر السوق مشبعًا بالشراء.
+            - إذا كانت القيمة تحت 30، يعتبر السوق مشبعًا بالبيع.
+        </p>
+    </div>
     <canvas id="rsiChart" width="400" height="200"></canvas>
     <button onclick="location.href='index.html'">Go Back</button>
 
@@ -26,8 +35,8 @@
                 labels: ['January', 'February', 'March', 'April', 'May', 'June'],
                 datasets: [{
                     label: 'RSI',
-                    data: [65, 70, 75, 80, 85, 90], // بيانات RSI افتراضية
-                    borderColor: 'rgba(75, 192, 192, 1)',
+                    data: [70, 65, 80, 40, 20, 50], // البيانات يمكن أن تكون تمثيلًا تاريخيًا
+                    borderColor: 'rgba(255, 159, 64, 1)',
                     borderWidth: 2,
                     fill: false
                 }]
@@ -35,7 +44,9 @@
             options: {
                 scales: {
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        min: 0,
+                        max: 100,
                     }
                 }
             }
