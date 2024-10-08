@@ -3,81 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Favorites Example</title>
+    <title>Favorite List Example</title>
     <style>
         body {
             font-family: Arial, sans-serif;
         }
-
-        #favorites-container {
-            position: absolute;
-            top: 20px;
-            right: 20px;
+        #fav-dropdown {
+            position: relative;
+            display: inline-block;
+            margin: 20px;
         }
-
-        #favorites-dropdown {
+        #fav-button {
+            background-color: #007bff;
+            color: white;
             padding: 10px;
+            border: none;
             cursor: pointer;
+            border-radius: 5px;
         }
-
-        #favorite-list {
+        #fav-list {
             display: none;
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-            border: 1px solid #ccc;
-            width: 200px;
             position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
         }
-
-        #favorite-list li {
-            padding: 8px;
-            border-bottom: 1px solid #ddd;
-            cursor: pointer;
+        #fav-list a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
         }
-
-        #favorite-list li:hover {
+        #fav-list a:hover {
             background-color: #f1f1f1;
+        }
+        #crypto-input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-right: 10px;
         }
     </style>
 </head>
 <body>
 
-    <div id="favorites-container">
-        <button id="favorites-dropdown">Favorites ⬇</button>
-        <ul id="favorite-list"></ul>
+<h2>Favorites Dropdown Example</h2>
+
+<!-- Dropdown button -->
+<div id="fav-dropdown">
+    <button id="fav-button" onclick="toggleDropdown()">Favorites ▼</button>
+    <div id="fav-list">
+        <!-- Favorites will be dynamically added here -->
     </div>
+</div>
 
-    <div>
-        <input type="text" id="cryptoInput" placeholder="Enter crypto name">
-        <button onclick="addFavorite()">Add to Favorites</button>
-    </div>
+<!-- Input for adding new cryptos -->
+<input type="text" id="crypto-input" placeholder="Add new crypto" />
+<button onclick="addToFavorites()">Add to Favorites</button>
 
-    <script>
-        const favoriteList = document.getElementById('favorite-list');
-        const favoritesDropdown = document.getElementById('favorites-dropdown');
+<script>
+    // Array to hold favorite cryptos
+    let favorites = [];
 
-        // Toggle the visibility of the favorite list
-        favoritesDropdown.addEventListener('click', () => {
-            favoriteList.style.display = favoriteList.style.display === 'none' ? 'block' : 'none';
-        });
+    // Function to toggle the favorites dropdown
+    function toggleDropdown() {
+        const favList = document.getElementById('fav-list');
+        favList.style.display = favList.style.display === 'block' ? 'none' : 'block';
+    }
 
-        // Function to add a favorite item
-        function addFavorite() {
-            const cryptoInput = document.getElementById('cryptoInput').value;
-            if (!cryptoInput) {
-                alert('Please enter a crypto name.');
-                return;
-            }
+    // Function to add a new crypto to the favorites list
+    function addToFavorites() {
+        const cryptoInput = document.getElementById('crypto-input');
+        const cryptoName = cryptoInput.value.trim();
 
-            const listItem = document.createElement('li');
-            listItem.textContent = cryptoInput;
-            favoriteList.appendChild(listItem);
-
-            document.getElementById('cryptoInput').value = ''; // Clear the input field
+        if (cryptoName !== '') {
+            favorites.push(cryptoName);
+            updateFavorites();
+            cryptoInput.value = '';  // Clear the input field
         }
-    </script>
+    }
+
+    // Function to update the favorites dropdown list
+    function updateFavorites() {
+        const favList = document.getElementById('fav-list');
+        favList.innerHTML = '';  // Clear the current list
+
+        favorites.forEach((crypto) => {
+            const cryptoLink = document.createElement('a');
+            cryptoLink.href = '#';
+            cryptoLink.textContent = crypto;
+            favList.appendChild(cryptoLink);
+        });
+    }
+</script>
 
 </body>
 </html>
