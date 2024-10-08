@@ -45,12 +45,28 @@
 
     <div id="crypto-name">اسم العملة هنا</div> <!-- لعرض اسم العملة -->
 
+    <div id="timeframe">
+        <label for="timeframe-select">اختر الفريم:</label>
+        <select id="timeframe-select" onchange="updateTimeframe()">
+            <option value="1m">1 دقيقة</option>
+            <option value="5m">5 دقائق</option>
+            <option value="15m">15 دقيقة</option>
+            <option value="1h">ساعة واحدة</option>
+            <option value="4h">4 ساعات</option>
+            <option value="1d">يوم واحد</option>
+            <option value="1w">أسبوع واحد</option>
+            <option value="1M">شهر واحد</option>
+            <option value="1Y">سنة واحدة</option>
+        </select>
+    </div>
+
     <canvas id="macdChart" width="400" height="200"></canvas>
     <script>
         const ctx = document.getElementById('macdChart').getContext('2d');
         let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
         const favoritesList = document.getElementById('favorites-list');
         const cryptoNameElement = document.getElementById('crypto-name');
+        let currentCrypto = ''; // تخزين العملة الحالية
 
         function addToFavorites() {
             const input = document.getElementById('favorite-input');
@@ -69,9 +85,9 @@
 
         function updateFavoritesList() {
             favoritesList.innerHTML = '';
-            favorites.forEach((fav) => {
+            favorites.forEach((fav, index) => {
                 const li = document.createElement('li');
-                li.textContent = fav;
+                li.innerHTML = `${fav} <button onclick="removeFavorite(${index})">حذف</button>`;
                 li.onclick = () => {
                     setCryptoName(fav); // تغيير اسم العملة عند الضغط
                 };
@@ -79,15 +95,20 @@
             });
         }
 
+        function removeFavorite(index) {
+            favorites.splice(index, 1);
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            updateFavoritesList();
+        }
+
         function setCryptoName(name) {
             cryptoNameElement.textContent = name; // تغيير اسم العملة
-            // هنا يمكن إضافة الكود لتحميل بيانات العملة المحددة وعرض الشارت
+            currentCrypto = name; // حفظ العملة الحالية
             loadMACDData(name);
         }
 
         function loadMACDData(crypto) {
             // استخدم هنا API لتحميل بيانات MACD للعملة المحددة
-            // سأقوم بتحديث البيانات الافتراضية كمثال
             const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
             const macdData = [1, 0, -1, 0, 1, -1, 1]; // بيانات عشوائية كمثال
             const signalData = [0, 1, 0, -1, 0, 1, 0]; // بيانات عشوائية كمثال
@@ -120,6 +141,14 @@
                     }
                 }
             });
+        }
+
+        function updateTimeframe() {
+            const selectedTimeframe = document.getElementById('timeframe-select').value;
+            // هنا يمكنك إضافة الكود لتحميل البيانات بناءً على الفريم المحدد
+            console.log(`الفريم المحدد: ${selectedTimeframe}`);
+            // قد تحتاج إلى تحديث بيانات الشارت هنا بناءً على الفريم الجديد
+            loadMACDData(currentCrypto); // إعادة تحميل البيانات للعملة الحالية
         }
 
         // عرض قائمة المفضلة عند تحميل الصفحة
