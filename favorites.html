@@ -1,40 +1,240 @@
-<div id="favorites-container">
-    <button onclick="toggleFavorites()">🎉 المفضلة</button>
-    <div id="favorites-list" style="display: none;"></div>
-    <input type="text" id="favoriteCurrency" placeholder="أدخل اسم العملة هنا">
-    <button onclick="addFavorite()">أضف إلى المفضلة</button>
-</div>
-
-<script>
-    const favorites = [];
-
-    function toggleFavorites() {
-        const favoritesList = document.getElementById('favorites-list');
-        if (favoritesList.style.display === 'none') {
-            favoritesList.style.display = 'block';
-            displayFavorites();
-        } else {
-            favoritesList.style.display = 'none';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مؤشر MACD (MACD)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
         }
-    }
-
-    function addFavorite() {
-        const currency = document.getElementById('favoriteCurrency').value;
-        if (currency && !favorites.includes(currency)) {
-            favorites.push(currency);
-            document.getElementById('favoriteCurrency').value = '';
-            displayFavorites();
+        .indicator-description {
+            margin-bottom: 20px;
         }
-    }
+        #search-container {
+            margin-bottom: 20px;
+        }
+        #settings-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #divergence {
+            margin-top: 20px;
+            font-weight: bold;
+            color: red;
+        }
+        #favorites-container {
+            margin-top: 20px;
+        }
+        #favorites-list {
+            display: none;
+            border: 1px solid #ccc;
+            max-height: 100px;
+            overflow-y: auto;
+            position: absolute;
+            background: white;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="indicator-title">مؤشر ماكد (MACD) للعملة: <span id="crypto-name"> - </span></h1>
+    
+    <button id="settings-button" onclick="toggleSettings()">⚙️ إعدادات</button>
+    
+    <div id="search-container">
+        <input type="text" id="cryptoName" placeholder="أدخل اسم العملة هنا">
+        <button onclick="searchCrypto()">بحث</button>
+    </div>
+    
+    <div class="indicator-description">
+        <p><strong>مؤشر ماكد (MACD):</strong> يقيس الفرق بين متوسطين متحركين، مما يساعد في تحديد اتجاه الاتجاهات.</p>
+    </div>
+    
+    <canvas id="macdChart" width="400" height="200"></canvas>
+    <div id="divergence"></div>
 
-    function displayFavorites() {
-        const favoritesList = document.getElementById('favorites-list');
-        favoritesList.innerHTML = '';
-        favorites.forEach(fav => {
-            const div = document.createElement('div');
-            div.innerText = fav;
-            div.onclick = () => { alert(`Selected: ${fav}`); /* يمكنك إضافة منطق البحث هنا */ };
-            favoritesList.appendChild(div);
+    <!-- قسم المفضلة -->
+    <div id="favorites-container">
+        <button onclick="toggleFavorites()">🎉 المفضلة</button>
+        <div id="favorites-list" style="display: none;"></div>
+        <input type="text" id="favoriteCurrency" placeholder="أدخل اسم العملة هنا">
+        <button onclick="addFavorite()">أضف إلى المفضلة</button>
+    </div>
+
+    <button onclick="location.href='index.html'">عودة</button>
+
+    <script>
+        // بيانات لمؤشر MACD (يمكنك استبدالها ببيانات حقيقية)
+        const macdData = {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+            data: [1, 2, 0, -1, -2, -1],
+        };
+
+        const ctx = document.getElementById('macdChart').getContext('2d');
+        const macdChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: macdData.labels,
+                datasets: [{
+                    label: 'MACD',
+                    data: macdData.data,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        min: -5,
+                        max: 5,
+                    }
+                },
+                plugins: {
+                    annotation: {
+                        annotations: {
+                            line1: {
+                                type: 'line',
+                                yMin: -5,
+                                yMax: -5,
+                                borderColor: 'orange',
+                                borderWidth: 2,
+                                label: {
+                                    content: 'مستوى قاع (-5)',
+                                    enabled: true,
+                                    position: 'start',
+                                    backgroundColor: 'white',
+                                    color: 'orange'
+                                }
+                            },
+                            line2: {
+                                type: 'line',
+                                yMin: -2,
+                                yMax: -2,
+                                borderColor: 'red',
+                                borderWidth: 2,
+                                label: {
+                                    content: 'مستوى قاع (-2)',
+                                    enabled: true,
+                                    position: 'start',
+                                    backgroundColor: 'white',
+                                    color: 'red'
+                                }
+                            },
+                            line3: {
+                                type: 'line',
+                                yMin: 2,
+                                yMax: 2,
+                                borderColor: 'lightgreen',
+                                borderWidth: 2,
+                                label: {
+                                    content: 'مستوى سقف (2)',
+                                    enabled: true,
+                                    position: 'start',
+                                    backgroundColor: 'white',
+                                    color: 'lightgreen'
+                                }
+                            },
+                            line4: {
+                                type: 'line',
+                                yMin: 5,
+                                yMax: 5,
+                                borderColor: 'blue',
+                                borderWidth: 2,
+                                label: {
+                                    content: 'مستوى سقف (5)',
+                                    enabled: true,
+                                    position: 'start',
+                                    backgroundColor: 'white',
+                                    color: 'blue'
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         });
-    }
-</script>
+
+        function searchCrypto() {
+            const cryptoName = document.getElementById('cryptoName').value;
+            if (!cryptoName) {
+                alert('يرجى إدخال اسم العملة.');
+                return;
+            }
+
+            // تحديث اسم العملة في العنوان
+            document.getElementById('crypto-name').innerText = cryptoName;
+
+            // منطق البحث عن العملة
+            const hasDivergence = Math.random() < 0.5; // مثال عشوائي لتحديد وجود دايفرجنس
+
+            if (hasDivergence) {
+                document.getElementById('divergence').innerText = `يوجد دايفرجنس إيجابي للعملة: ${cryptoName}`;
+            } else {
+                document.getElementById('divergence').innerText = `لا يوجد دايفرجنس للعملة: ${cryptoName}`;
+            }
+
+            // إعادة تحميل البيانات (يمكنك تحديث البيانات الفعلية هنا)
+            updateMACDData(cryptoName);
+        }
+
+        function updateMACDData(cryptoName) {
+            // هنا يمكنك إضافة منطق لتحميل بيانات MACD الخاصة بالعملة المحددة
+            const newData = [Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * 10 - 5];
+            macdChart.data.datasets[0].data = newData;
+            macdChart.update();
+        }
+
+        // وظائف المفضلة
+        const favorites = [];
+
+        function toggleFavorites() {
+            const favoritesList = document.getElementById('favorites-list');
+            if (favoritesList.style.display === 'none') {
+                favoritesList.style.display = 'block';
+                displayFavorites();
+            } else {
+                favoritesList.style.display = 'none';
+            }
+        }
+
+        function addFavorite() {
+            const currency = document.getElementById('favoriteCurrency').value;
+            if (currency && !favorites.includes(currency)) {
+                favorites.push(currency);
+                document.getElementById('favoriteCurrency').value = '';
+                displayFavorites();
+            }
+        }
+
+        function displayFavorites() {
+            const favoritesList = document.getElementById('favorites-list');
+            favoritesList.innerHTML = '';
+            favorites.forEach(fav => {
+                const div = document.createElement('div');
+                div.innerText = fav;
+                div.onclick = () => { alert(`تم اختيار: ${fav}`); /* يمكنك إضافة منطق البحث هنا */ };
+                favoritesList.appendChild(div);
+            });
+        }
+
+        function toggleSettings() {
+            alert("هنا يمكنك إضافة خيارات الإعدادات لتخصيص مؤشراتك.");
+            // يمكنك إضافة خيارات الإعدادات هنا لتغيير القيم أو إضافة ميزات أخرى
+        }
+    </script>
+</body>
+</html>
