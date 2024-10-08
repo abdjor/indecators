@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Total Inflow/Outflow Indicator</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Total Inflow/Outflow Indicator</h1>
+    <p>This is the detail page for the Total Inflow/Outflow indicator.</p>
+    <canvas id="totalChart" width="400" height="200"></canvas>
+    <button onclick="location.href='index.html'">Go Back</button>
+
+    <script>
+        const ctx = document.getElementById('totalChart').getContext('2d');
+        const totalChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                datasets: [{
+                    label: 'Total Inflow/Outflow',
+                    data: [1000, 1200, 1300, 1400, 1500, 1600],
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
