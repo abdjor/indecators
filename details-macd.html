@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مؤشر macd (MACD)</title>
+    <title>مؤشر ماكد (MACD)</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
     <style>
@@ -15,11 +15,27 @@
             margin-bottom: 20px;
         }
         #favorite-section {
-            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        #favorites-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        #favorites-list li {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
+    <div id="favorite-section">
+        <h3>المفضلة</h3>
+        <input type="text" id="favorite-input" placeholder="أضف عملة إلى المفضلة">
+        <button onclick="addToFavorites()">أضف</button>
+        <ul id="favorites-list"></ul>
+    </div>
+
     <h1 id="indicator-title">مؤشر ماكد (MACD) للعملة: <span id="crypto-name"> - </span></h1>
     
     <label for="timeframe">اختر الفريم الزمني:</label>
@@ -28,6 +44,7 @@
         <option value="5m">5 دقائق</option>
         <option value="15m">15 دقيقة</option>
         <option value="1h">ساعة</option>
+        <option value="4h">4 ساعات</option>
         <option value="1d">يوم</option>
         <option value="1w">أسبوع</option>
         <option value="1M">شهر</option>
@@ -35,13 +52,6 @@
     </select>
     
     <canvas id="macdChart" width="400" height="200"></canvas>
-
-    <div id="favorite-section">
-        <h3>المفضلة</h3>
-        <input type="text" id="favorite-input" placeholder="أضف عملة إلى المفضلة">
-        <button onclick="addToFavorites()">أضف</button>
-        <ul id="favorites-list"></ul>
-    </div>
 
     <script>
         const ctx = document.getElementById('macdChart').getContext('2d');
@@ -69,8 +79,9 @@
             }
         });
 
-        function updateMACDData() {
+        function updateMACDData(cryptoName = '') {
             const selectedTimeframe = document.getElementById('timeframe').value;
+            document.getElementById('crypto-name').textContent = cryptoName || ' - ';
             // هنا يمكنك إضافة منطق لتحميل بيانات MACD الخاصة بالفريم الزمني المحدد
             // هذا مثال بسيط يتم فيه تحديث البيانات بشكل عشوائي
             const newData = Array.from({ length: 6 }, () => Math.random() * 10 - 5);
@@ -87,6 +98,10 @@
                 const favoritesList = document.getElementById('favorites-list');
                 const newFavoriteItem = document.createElement('li');
                 newFavoriteItem.textContent = favoriteValue;
+                newFavoriteItem.onclick = function() {
+                    location.reload(); // إعادة تحميل الصفحة
+                    updateMACDData(favoriteValue); // تحديث اسم العملة فوق الشارت
+                };
                 favoritesList.appendChild(newFavoriteItem);
                 favoriteInput.value = ''; // إفراغ خانة الإدخال بعد الإضافة
             } else {
