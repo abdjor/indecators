@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>زر مفضل لإضافة عنصر</title>
+    <title>مؤشر العملات المفضلة</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,7 +20,7 @@
         }
         #item-list {
             margin-top: 20px;
-            list-style-type: none; /* إزالة النقاط من القائمة */
+            list-style-type: none;
             padding: 0;
         }
         #item-list li {
@@ -38,22 +38,27 @@
     <header>
         <h1>مفضلة العملات</h1>
         <div>
-            <input type="text" id="itemInput" placeholder="أدخل شيئًا هنا">
-            <button onclick="addItem()">إضافة</button>
+            <input type="text" id="itemInput" placeholder="أدخل اسم العملة هنا">
+            <button id="addButton">إضافة</button>
         </div>
     </header>
 
     <ul id="item-list"></ul>
 
     <script>
+        // إضافة حدث للزر عند الضغط عليه
+        document.getElementById('addButton').onclick = function() {
+            addItem();
+        };
+
         function addItem() {
             const itemInput = document.getElementById('itemInput');
-            const itemText = itemInput.value.trim(); // الحصول على النص وإزالة الفراغات
+            const itemText = itemInput.value.trim();
 
             if (itemText) {
-                const listItem = document.createElement('li'); // إنشاء عنصر قائمة جديد
-                listItem.textContent = itemText; // تعيين النص لعنصر القائمة
-                document.getElementById('item-list').appendChild(listItem); // إضافة عنصر القائمة إلى القائمة
+                const listItem = document.createElement('li');
+                listItem.textContent = itemText;
+                document.getElementById('item-list').appendChild(listItem);
                 itemInput.value = ''; // مسح حقل الإدخال
             } else {
                 alert('يرجى إدخال نص.'); // رسالة خطأ إذا كان الحقل فارغًا
